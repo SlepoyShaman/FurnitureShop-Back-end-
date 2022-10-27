@@ -25,7 +25,7 @@ namespace FurnitureShop.Controllers
             return Ok();
         }
 
-        [HttpPost("Delete")]
+        [HttpDelete("Delete")]
         public IActionResult Remove([FromBody] GetProductModel model)
         {
             try
@@ -40,7 +40,7 @@ namespace FurnitureShop.Controllers
 
         }
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult Show()
         {
             var cart = new ShopingCart(HttpContext.Session).GetCart();

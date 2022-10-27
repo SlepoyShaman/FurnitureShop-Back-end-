@@ -18,7 +18,7 @@ namespace FurnitureShop.Controllers
 
         private readonly int ProductsOnHomePage = 9;
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult Index() 
             => Ok(_repository.GetAll<Product>().Take(ProductsOnHomePage)
                 .Select(p => new RetProductModel

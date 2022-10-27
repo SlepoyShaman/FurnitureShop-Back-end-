@@ -41,7 +41,7 @@ namespace FurnitureShop.Controllers
             return Ok();
         }
 
-        [HttpPost("RemoveProductById")]
+        [HttpDelete("RemoveProductById")]
         public async Task<IActionResult> RemoveProductById([FromBody]GetProductModel model)
         {
             try

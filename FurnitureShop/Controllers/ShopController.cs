@@ -2,7 +2,6 @@
 using FurnitureShop.Models.DataModels;
 using FurnitureShop.Models.VIewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace FurnitureShop.Controllers
 {
@@ -11,25 +10,25 @@ namespace FurnitureShop.Controllers
     public class ShopController : ControllerBase
     {
         private readonly IRepository _repository;
+        private readonly List<Category> _categories;
+        private readonly List<Company> _companies;
+        private readonly int ProductsOnPage = 6;
+
         public ShopController(IRepository repository)
         {
             _repository = repository;
+            _categories = _repository.GetAll<Category>().ToList();
+            _companies = _repository.GetAll<Company>().ToList();
         }
 
-        private readonly int ProductsOnPage = 6;
-
-        [HttpPost("GetSideBarData")]
-        public async Task<IActionResult> GetSideBarData()
-        {
-            var categories =  await _repository.GetAll<Category>().Select(c => new { Id = c.Id, Name = c.Name }).ToArrayAsync();
-            var companies = await _repository.GetAll<Company>().Select(c => new { Id = c.Id, Name = c.Name }).ToArrayAsync();
-
-            return Ok(new
+        [HttpGet("GetSideBarData")]
+        public IActionResult GetSideBarData() =>
+           Ok(new
             {
-                Categories = categories,
-                Companies = companies
+                Categories = _categories.Select(c => new { Id = c.Id, Name = c.Name }),
+                Companies = _companies.Select(c => new { Id = c.Id, Name = c.Name })
             });
-        }
+        
             
         [HttpPost("GetCategorysProducts")]
         public IActionResult GetCategoryProducts([FromBody] GetCategorysProductsModel model)
